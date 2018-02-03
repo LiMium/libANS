@@ -26,40 +26,62 @@ import hrj.libans.SymbolInfo;
 import hrj.libans.SymbolStatistics;
 
 class DynamicStatsTest {
-  static final class SimpleStats implements SymbolStatistics {
-    final int max;
-    final int maxBits;
+  static final class DynamicStats implements SymbolStatistics {
+    private final int[] counts;
+    private int totalCount;
+    private final int N;
 
-    public SimpleStats() {
-      this.max = 255;
-      this.maxBits = 18;
+    public DynamicStats() {
+      this.N = 256;
+      this.counts = new int[N];
+      initCounts();
+      totalCount = N;
     }
 
-    public SimpleStats(final int max) {
-      this.max = max;
-      this.maxBits = Integer.numberOfTrailingZeros(Integer.highestOneBit(max*(max+1)/2)) + 2;
+    public DynamicStats(final int N) {
+      this.N = N;
+      this.counts = new int[N];
+      initCounts();
+      totalCount = N;
+    }
+
+    private void initCounts() {
+      for (int i = 0; i < N; i++) {
+        counts[i] = 1;
+      }
     }
 
     @Override
     public SymbolInfo findSymbol(final int cumFreq) {
-      for (int s = 0; s <= max+1; s++) {
-        if ((s * (s + 1) / 2) > cumFreq) {
-          final int symb = s - 1;
-          return new SymbolInfo(symb + 1, symb * (symb + 1) / 2, symb);
+      int sum = 0;
+      int prevSum = 0;
+      for (int i = 0; i < N; i++) {
+        prevSum = sum;
+        sum += counts[i];
+        // if ((sum + counts[i+1]) > cumFreq) {
+        if (sum > cumFreq) {
+          final int symb = i;
+          return new SymbolInfo(counts[symb], prevSum, symb);
         }
       }
-      return new SymbolInfo(1, 0, 0);
+      return new SymbolInfo(counts[N-1], prevSum, N-1);
     }
 
     @Override
     public int getScaleBits() {
-      return maxBits;
+      return TestUtils.requiredBits(totalCount);
     }
 
     @Override
     public SymbolInfo update(final int s) {
-      assert(s <= max);
-      return new SymbolInfo(s + 1, s * (s + 1) / 2, s);
+      assert(s < N);
+      int sum = 0;
+      for (int i = 0; i < s; i++) {
+        sum += counts[i];
+      }
+      counts[s] += 1;
+      totalCount++;
+      return new SymbolInfo(counts[s] - 1, sum, s);
     }
 
     @Override
@@ -71,30 +93,31 @@ class DynamicStatsTest {
   @Test
   void testFew() throws IOException {
     for (int i = 1; i < 100; i += 2) {
-      int bound = 256 * (i % 3 + 1);
-      TestUtils.testCodec(new SimpleStats(bound-1), new SimpleStats(bound-1), i, bound, i);
+      // int bound = 256 * (i % 3 + 1);
+      int bound = 256;
+      TestUtils.testCodec(new DynamicStats(bound), new DynamicStats(bound), i, bound, i);
     }
   }
 
   @Test
   void testThousand() throws IOException {
-    TestUtils.testCodec(new SimpleStats(), new SimpleStats(), 1000, 256, 13);
+    TestUtils.testCodec(new DynamicStats(), new DynamicStats(), 1000, 256, 13);
   }
 
   @Test
   void testTenThousand() throws IOException {
     int bound = 512;
-    TestUtils.testCodec(new SimpleStats(bound-1), new SimpleStats(bound-1), 10000, 512, 13);
+    TestUtils.testCodec(new DynamicStats(bound), new DynamicStats(bound), 10000, 512, 13);
   }
 
   @Test
   void testHundredThousand() throws IOException {
-    TestUtils.testCodec(new SimpleStats(), new SimpleStats(), 100*1000, 256, 131);
+    TestUtils.testCodec(new DynamicStats(), new DynamicStats(), 100*1000, 256, 131);
   }
 
   @Test
   void testMillion() throws IOException {
-    TestUtils.testCodec(new SimpleStats(), new SimpleStats(), 1000*1000, 256, 121);
+    TestUtils.testCodec(new DynamicStats(), new DynamicStats(), 1000*1000, 256, 121);
   }
 
 }

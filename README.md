@@ -13,3 +13,8 @@ that should not take up a lot of space (due to compression).
 # License
 
 LGPL3 (See LICENSE.txt)
+
+# Credits
+
+* Jarek Duda who invented ANS
+* Code inspiration from https://github.com/rygorous/ryg_rans

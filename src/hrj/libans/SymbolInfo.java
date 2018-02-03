@@ -16,25 +16,17 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans.test;
+package hrj.libans;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+public class SymbolInfo {
+  public final int freq;
+  public final int start;
+  public final int symbol;
 
-import org.junit.jupiter.api.Test;
-
-import hrj.librans.IntStack;
-
-class IntStackTest {
-
-  @Test
-  void test() {
-    IntStack stack = new IntStack();
-    for (int i = 0; i < 10; i++) {
-      stack.push(i);
-    }
-    for (int i = 9; i >= 0; i--) {
-      assertEquals(i, stack.pop());
-    }
+  public SymbolInfo(final int freq, final int start, final int symbol) {
+    super();
+    this.freq = freq;
+    this.start = start;
+    this.symbol = symbol;
   }
-
 }

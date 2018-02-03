@@ -16,7 +16,7 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans;
+package hrj.libans;
 
 final public class IntStack {
 

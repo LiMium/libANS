@@ -16,17 +16,16 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans;
+package hrj.libans;
 
-public class SymbolInfo {
-  public final int freq;
-  public final int start;
-  public final int symbol;
+public interface SymbolStatistics {
 
-  public SymbolInfo(final int freq, final int start, final int symbol) {
-    super();
-    this.freq = freq;
-    this.start = start;
-    this.symbol = symbol;
-  }
+  SymbolInfo findSymbol(int cumFreq);
+
+  int getScaleBits();
+
+  SymbolInfo update(int c);
+
+  void finish();
+
 }

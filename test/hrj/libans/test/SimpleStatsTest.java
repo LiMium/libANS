@@ -16,14 +16,14 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans.test;
+package hrj.libans.test;
 
 import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
-import hrj.librans.SymbolInfo;
-import hrj.librans.SymbolStatistics;
+import hrj.libans.SymbolInfo;
+import hrj.libans.SymbolStatistics;
 
 class SimpleStatsTest {
   static final class SimpleStats implements SymbolStatistics {

@@ -16,16 +16,25 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans;
+package hrj.libans.test;
 
-public interface SymbolStatistics {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-  SymbolInfo findSymbol(int cumFreq);
+import org.junit.jupiter.api.Test;
 
-  int getScaleBits();
+import hrj.libans.IntStack;
 
-  SymbolInfo update(int c);
+class IntStackTest {
 
-  void finish();
+  @Test
+  void test() {
+    IntStack stack = new IntStack();
+    for (int i = 0; i < 10; i++) {
+      stack.push(i);
+    }
+    for (int i = 9; i >= 0; i--) {
+      assertEquals(i, stack.pop());
+    }
+  }
 
 }

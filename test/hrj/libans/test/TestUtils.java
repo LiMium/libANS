@@ -16,7 +16,7 @@
     along with lib-rANS.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package hrj.librans.test;
+package hrj.libans.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -24,9 +24,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Random;
 
-import hrj.librans.InMemoryEncoder;
-import hrj.librans.SymbolStatistics;
-import hrj.librans.rANSDecoder;
+import hrj.libans.InMemoryEncoder;
+import hrj.libans.SymbolStatistics;
+import hrj.libans.rANSDecoder;
 
 public class TestUtils {
 

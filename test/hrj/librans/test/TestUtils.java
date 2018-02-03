@@ -22,11 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Random;
 
 import hrj.librans.InMemoryEncoder;
-import hrj.librans.IntStack;
 import hrj.librans.SymbolStatistics;
 import hrj.librans.rANSDecoder;
 

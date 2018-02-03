@@ -56,4 +56,7 @@ public class TestUtils {
     // System.out.println("---- Done -----\n\n");
   }
 
+  static int requiredBits(int n) {
+    return Integer.numberOfTrailingZeros(Integer.highestOneBit(n)) + 1;
+  }
 }

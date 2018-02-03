@@ -37,7 +37,7 @@ class SimpleStatsTest {
 
     public SimpleStats(final int max) {
       this.max = max;
-      this.maxBits = Integer.numberOfTrailingZeros(Integer.highestOneBit(max*(max+1)/2)) + 2;
+      this.maxBits = TestUtils.requiredBits(max*(max+1)/2) + 2;
     }
 
     @Override
@@ -48,7 +48,7 @@ class SimpleStatsTest {
           return new SymbolInfo(symb + 1, symb * (symb + 1) / 2, symb);
         }
       }
-      return new SymbolInfo(1, 0, 0);
+      throw new RuntimeException("Invalid Frequency");
     }
 
     @Override

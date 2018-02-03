@@ -27,10 +27,22 @@ import hrj.librans.SymbolStatistics;
 
 class SimpleStatsTest {
   static final class SimpleStats implements SymbolStatistics {
+    final int max;
+    final int maxBits;
+
+    public SimpleStats() {
+      this.max = 255;
+      this.maxBits = 18;
+    }
+
+    public SimpleStats(final int max) {
+      this.max = max;
+      this.maxBits = Integer.numberOfTrailingZeros(Integer.highestOneBit(max*(max+1)/2)) + 2;
+    }
 
     @Override
     public SymbolInfo findSymbol(final int cumFreq) {
-      for (int s = 0; s <= 256; s++) {
+      for (int s = 0; s <= max+1; s++) {
         if ((s * (s + 1) / 2) > cumFreq) {
           final int symb = s - 1;
           return new SymbolInfo(symb + 1, symb * (symb + 1) / 2, symb);
@@ -41,11 +53,12 @@ class SimpleStatsTest {
 
     @Override
     public int getScaleBits() {
-      return 16;
+      return maxBits;
     }
 
     @Override
     public SymbolInfo update(final int s) {
+      assert(s <= max);
       return new SymbolInfo(s + 1, s * (s + 1) / 2, s);
     }
 
@@ -58,7 +71,8 @@ class SimpleStatsTest {
   @Test
   void testFew() throws IOException {
     for (int i = 1; i < 100; i += 2) {
-      TestUtils.testCodec(new SimpleStats(), new SimpleStats(), i, 256, i);
+      int bound = 256 * (i % 3 + 1);
+      TestUtils.testCodec(new SimpleStats(bound-1), new SimpleStats(bound-1), i, bound, i);
     }
   }
 
@@ -69,7 +83,8 @@ class SimpleStatsTest {
 
   @Test
   void testTenThousand() throws IOException {
-    TestUtils.testCodec(new SimpleStats(), new SimpleStats(), 10000, 256, 13);
+    int bound = 512;
+    TestUtils.testCodec(new SimpleStats(bound-1), new SimpleStats(bound-1), 10000, 512, 13);
   }
 
   @Test

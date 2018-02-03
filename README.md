@@ -10,6 +10,9 @@ symbols need to be buffered and encoded in reverse order of their appearance.
 The encoded stream also needs to be reversed, requiring temporary storage, but
 that should not take up a lot of space (due to compression).
 
+# Status
+The code has been well tested (see test/), but consider it beta quality as of now.
+
 # License
 
 LGPL3 (See LICENSE.txt)

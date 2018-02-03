@@ -29,4 +29,9 @@ public class SymbolInfo {
     this.start = start;
     this.symbol = symbol;
   }
+
+  @Override
+  public String toString() {
+    return "SymbolInfo [freq=" + freq + ", start=" + start + ", symbol=" + symbol + "]";
+  }
 }

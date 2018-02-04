@@ -21,54 +21,19 @@ package hrj.libans;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class rANSDecoder {
+public class rANSDecoder extends rANSBaseDecoder {
 
   public rANSDecoder(final InputStream in, final SymbolStatistics stats) throws IOException {
-    super();
-    this.in = in;
+    super(in);
     this.stats = stats;
-    init();
   }
 
-  private final int RANS_BYTE_L = 1 << 23;
-
-  private final InputStream in;
   private final SymbolStatistics stats;
-
-  private int getNext() throws IOException {
-    return in.read();
-  }
-
-  private int state;
-
-  private void init() throws IOException {
-    final int n4 = getNext();
-    final int n3 = getNext();
-    final int n2 = getNext();
-    final int n1 = getNext();
-    state = n1 | (n2 << 8) | (n3 << 16) | (n4 << 24);
-  }
-
-  private int getCumFreq(final int scaleBits) {
-    return state & ((1 << scaleBits) - 1);
-  }
 
   public int advance() throws IOException {
     int scaleBits = stats.getScaleBits();
     SymbolInfo symbInfo = stats.findSymbol(getCumFreq(scaleBits));
-    // s, x = D(x)
-    int x = state;
-    final int mask = (1 << scaleBits) - 1;
-    x = symbInfo.freq * (x >>> scaleBits) + (x & mask) - symbInfo.start;
-
-    // renormalize
-    while (Integer.compareUnsigned(x, RANS_BYTE_L) < 0) {
-      final int n = getNext();
-      assert (n >= 0);
-      x = (x << 8) | n;
-    }
-
-    state = x;
+    advance(scaleBits, symbInfo.freq, symbInfo.start);
     stats.update(symbInfo.symbol);
     return symbInfo.symbol;
   }

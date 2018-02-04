@@ -10,8 +10,18 @@ symbols need to be buffered and encoded in reverse order of their appearance.
 The encoded stream also needs to be reversed, requiring temporary storage, but
 that should not take up a lot of space (due to compression).
 
+# Design
+This library uses an abstract Symbol Statistics interface, thus providing full
+cusomtization. Some example Statistical implementations are in the tests.
+
 # Status
-The code has been well tested (see test/), but consider it beta quality as of now.
+
+The current focus is on stability. The code has been well tested (see test/),
+but consider it beta quality as of now.
+
+Future ideas:
+  * Use a dynamically growing stack
+  * (optimisation) : Avoid division in encoder by using "reciprocals", ala Alverson
 
 # License
 

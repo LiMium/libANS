@@ -55,6 +55,12 @@ public class rANSBaseEncoder {
     freqHistory.push(freq);
   }
 
+  public void append(int c, SymbolStatistics stats) {
+    final int scaleBits = stats.getScaleBits();
+    SymbolInfo symbInfo = stats.update(c);
+    append(scaleBits, symbInfo.start, symbInfo.freq);
+  }
+
   public void finish() throws IOException {
     final int count = startHistory.getCount();
     for (int i = 0; i < count; i++) {

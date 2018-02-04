@@ -66,4 +66,12 @@ public class rANSBaseDecoder {
 
     state = x;
   }
+
+  public int advance(SymbolStatistics stats) throws IOException {
+    int scaleBits = stats.getScaleBits();
+    SymbolInfo symbInfo = stats.findSymbol(getCumFreq(scaleBits));
+    advance(scaleBits, symbInfo.freq, symbInfo.start);
+    stats.update(symbInfo.symbol);
+    return symbInfo.symbol;
+  }
 }

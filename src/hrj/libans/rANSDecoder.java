@@ -31,10 +31,6 @@ public class rANSDecoder extends rANSBaseDecoder {
   private final SymbolStatistics stats;
 
   public int advance() throws IOException {
-    int scaleBits = stats.getScaleBits();
-    SymbolInfo symbInfo = stats.findSymbol(getCumFreq(scaleBits));
-    advance(scaleBits, symbInfo.freq, symbInfo.start);
-    stats.update(symbInfo.symbol);
-    return symbInfo.symbol;
+    return super.advance(stats);
   }
 }

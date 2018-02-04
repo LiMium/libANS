@@ -31,9 +31,7 @@ public class rANSEncoder extends rANSBaseEncoder {
   private final SymbolStatistics stats;
 
   public void append(int c) {
-    final int scaleBits = stats.getScaleBits();
-    SymbolInfo symbInfo = stats.update(c);
-    super.append(scaleBits, symbInfo.start, symbInfo.freq);
+    super.append(c, stats);
   }
 
   public void finish() throws IOException {

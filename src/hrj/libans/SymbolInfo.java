@@ -34,4 +34,39 @@ public class SymbolInfo {
   public String toString() {
     return "SymbolInfo [freq=" + freq + ", start=" + start + ", symbol=" + symbol + "]";
   }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + freq;
+    result = prime * result + start;
+    result = prime * result + symbol;
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (!(obj instanceof SymbolInfo)) {
+      return false;
+    }
+    SymbolInfo other = (SymbolInfo) obj;
+    if (freq != other.freq) {
+      return false;
+    }
+    if (start != other.start) {
+      return false;
+    }
+    if (symbol != other.symbol) {
+      return false;
+    }
+    return true;
+  }
+
 }
